@@ -1,4 +1,4 @@
-CFLAGS ?= -O2 -pipe -fomit-frame-pointer -march=native
+CFLAGS ?= -ggdb3 -lc -v
 ifeq ($(OLD_IPSET),1)
 	CFLAGS += -DOLD_IPSET
 else
@@ -7,7 +7,11 @@ endif
 
 .PHONY: clean
 
-ipset-dns:
+ipset-dns: ipset-dns.o
+	$(CC) -o $@ $< $(CFLAGS)
+	
+.c.o:
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:
-	rm -f ipset-dns
+	rm -f ipset-dns.o ipset-dns
